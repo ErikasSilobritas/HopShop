@@ -39,9 +39,9 @@ namespace HopShop.WEBApi.Controllers
         }
 
         [HttpPost]
-        public async Task <ActionResult> AddItem(string itemName, decimal itemPrice, int itemQuantity)
+        public async Task <ActionResult> AddItem(string name, decimal price, int quantity)
         {
-            await _itemService.AddItem(itemName, itemPrice, itemQuantity);
+            await _itemService.AddItem(name, price, quantity);
             return Ok();
         }
 

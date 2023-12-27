@@ -40,7 +40,6 @@ namespace HopShop.WEBApi.Repositories
         public async Task DeleteItem(int id)
         {
             var existingItem = _dataContext.items.FirstOrDefault(t => t.Id == id && t.IsDeleted == false);
-
             existingItem.IsDeleted = true;
             await _dataContext.SaveChangesAsync();
         }
@@ -48,11 +47,6 @@ namespace HopShop.WEBApi.Repositories
         public async Task<Item> EditItem(Item item)
         {
             var existingItem = _dataContext.items.FirstOrDefault(t => t.Id == item.Id && t.IsDeleted == false);
-
-            if (existingItem is null)
-            {
-                return existingItem;
-            }
 
             existingItem.Name = item.Name;
             existingItem.Price = item.Price;
@@ -67,12 +61,12 @@ namespace HopShop.WEBApi.Repositories
             return await _dataContext.items.Where(i => !i.IsDeleted).ToListAsync();
         }
 
-        public async Task<Item> GetItemById(int id)
+        public async Task<Item?> GetItemById(int id)
         {
             return await _dataContext.items.FirstOrDefaultAsync(i => i.Id == id && i.IsDeleted == false);
         }
 
-        public async Task<Item> GetItemByName(string itemName) 
+        public async Task<Item?> GetItemByName(string itemName) 
         {
             return await _dataContext.items.FirstOrDefaultAsync(i => i.Name == itemName && i.IsDeleted == false);
         }

@@ -35,6 +35,8 @@ namespace HopShop.WEBApi.Services
             return itemRequest;
         }
 
+        
+
         public async Task<List<GetItem>>GetAllItems()
         {
 
@@ -52,22 +54,20 @@ namespace HopShop.WEBApi.Services
 
         public async Task <EditItem> EditItem(EditItem editItem)
         {
+            if (await _itemRepository.GetItemById(editItem.Id) is null)
+            {
+                throw new ItemNotFoundException();
+            }
+
             var item = new Item
             {
-                
                 Id = editItem.Id,
                 Name = editItem.Name,
                 Price = editItem.Price,
                 Quantity = editItem.Quantity
             };
 
-            var returnedItem = await _itemRepository.EditItem(item);
-
-            if (returnedItem is null)
-            {
-                throw new ItemNotFoundException();
-            }
-                
+            var returnedItem = await _itemRepository.EditItem(item);    
                 
             var editedItem = new EditItem 
             {
