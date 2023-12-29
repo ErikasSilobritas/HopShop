@@ -33,11 +33,11 @@ namespace Infrastructure.Repositories
         {
             var existingItem = _dataContext.items.FirstOrDefault(t => t.Id == item.Id && t.IsDeleted == false);
 
-            existingItem.Name = item.Name;
-            existingItem.Price = item.Price;
-            existingItem.Quantity = item.Quantity;
+            existingItem.Name = item.Name ?? existingItem.Name;
+            existingItem.Price = item.Price ?? existingItem.Price;
+            existingItem.Quantity = item.Quantity ?? existingItem.Quantity;
+            existingItem.ShopId = item.ShopId ?? existingItem.ShopId;
             await _dataContext.SaveChangesAsync();
-
             return existingItem;
         }
 
@@ -51,6 +51,12 @@ namespace Infrastructure.Repositories
         {
             var existingItem = _dataContext.items.FirstOrDefault(t => t.Id == id && t.IsDeleted == false);
             existingItem.IsDeleted = true;
+            await _dataContext.SaveChangesAsync();
+        }
+
+        public async Task AppendPurchaseHistory(PurchaseHistory history)
+        {
+            _dataContext.purchases.Add(history);
             await _dataContext.SaveChangesAsync();
         }
     }

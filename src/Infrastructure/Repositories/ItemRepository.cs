@@ -44,6 +44,7 @@ namespace Infrastructure.Repositories
             var updatedItem = _connection.QuerySingle<Item>(sql, queryArguments);
             return updatedItem;
         }
+
         public void AddItem(Item item)
         {
             string sql = $"INSERT INTO items (item_name, item_price, item_quantity) VALUES (@ItemName, @ItemPrice, @ItemQuantity)";

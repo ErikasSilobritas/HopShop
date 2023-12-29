@@ -12,12 +12,16 @@ namespace HopShop.UnitTests.Services
     public class ItemServiceTests
     {
         private readonly Mock<IItemRepository> _itemRepositoryMock;
+        private readonly Mock<IShopRepository> _shopRepositoryMock;
         private readonly ItemService _itemService;
+        
 
         public ItemServiceTests()
         {
             _itemRepositoryMock = new Mock<IItemRepository>();
-            _itemService = new ItemService(_itemRepositoryMock.Object);
+            _shopRepositoryMock = new Mock<IShopRepository>();
+            _itemService = new ItemService(_itemRepositoryMock.Object, _shopRepositoryMock.Object);
+
         }
 
         [Theory]

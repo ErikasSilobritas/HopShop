@@ -40,18 +40,17 @@ namespace HopShop.WEBApi.Controllers
         /// <summary>
         /// Edit an item
         /// </summary>
-        [HttpPut]
+        [HttpPut("edit")]
         public async Task <ActionResult> EditItem([FromBody] EditItem editItem)
         {
-            var result = await _itemService.EditItem(editItem);
-            return Ok();
+            return Ok(await _itemService.EditItem(editItem));
         }
 
         /// <summary>
         /// Assign an item to a shop
         /// </summary>
-        [HttpPut]
-        public async Task<ActionResult> AssignItemToShop([FromBody] AssignItemToShop assign)
+        [HttpPut("assign")]
+        public async Task<ActionResult<GetItem>> AssignItemToShop([FromBody] AssignItemToShop assign)
         {
             return Ok(await _itemService.AssignItemToShop(assign));
         }

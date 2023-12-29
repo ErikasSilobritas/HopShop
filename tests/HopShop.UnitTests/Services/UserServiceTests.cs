@@ -12,12 +12,17 @@ namespace HopShop.UnitTests.Services
     public class UserServiceTests
     {
         private readonly Mock<IJsonPlaceholderClient> _jsonPlaceholderClientMock;
+        private readonly Mock<IItemRepository> _itemRepositoryMock;
+        private readonly Mock<IShopRepository> _shopRepositoryMock;
         private readonly UserService _userService;
+
 
         public UserServiceTests()
         {
             _jsonPlaceholderClientMock = new Mock<IJsonPlaceholderClient>();
-            _userService = new UserService(_jsonPlaceholderClientMock.Object);
+            _itemRepositoryMock = new Mock<IItemRepository>();
+            _shopRepositoryMock = new Mock<IShopRepository>();
+            _userService = new UserService(_jsonPlaceholderClientMock.Object, _shopRepositoryMock.Object, _itemRepositoryMock.Object);
         }
 
         [Theory]

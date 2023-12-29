@@ -10,6 +10,7 @@ namespace Domain.Interfaces
         public Task<Item> EditItem(Item item);
         public Task AddItem(Item item);
         public Task DeleteItem(int id);
+        Task AppendPurchaseHistory(PurchaseHistory history);
     }
 }
 

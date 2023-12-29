@@ -49,15 +49,64 @@ namespace Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<decimal>("Price")
+                    b.Property<decimal?>("Price")
                         .HasColumnType("numeric");
 
-                    b.Property<int>("Quantity")
+                    b.Property<int?>("Quantity")
+                        .HasColumnType("integer");
+
+                    b.Property<int?>("ShopId")
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
 
+                    b.HasIndex("ShopId");
+
                     b.ToTable("items");
+                });
+
+            modelBuilder.Entity("Domain.Entities.PurchaseHistory", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime?>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("text");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
+
+                    b.Property<int?>("ItemId")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime?>("ModifiedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasColumnType("text");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("integer");
+
+                    b.Property<int?>("ShopId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ItemId");
+
+                    b.HasIndex("ShopId");
+
+                    b.ToTable("purchases");
                 });
 
             modelBuilder.Entity("Domain.Entities.Shop", b =>
@@ -96,56 +145,33 @@ namespace Infrastructure.Migrations
                     b.ToTable("shops");
                 });
 
-            modelBuilder.Entity("Domain.Entities.ShopItem", b =>
+            modelBuilder.Entity("Domain.Entities.Item", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
+                    b.HasOne("Domain.Entities.Shop", "Shop")
+                        .WithMany("Items")
+                        .HasForeignKey("ShopId");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("ItemId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("ShopId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ItemId");
-
-                    b.HasIndex("ShopId");
-
-                    b.ToTable("shopsItems");
+                    b.Navigation("Shop");
                 });
 
-            modelBuilder.Entity("Domain.Entities.ShopItem", b =>
+            modelBuilder.Entity("Domain.Entities.PurchaseHistory", b =>
                 {
                     b.HasOne("Domain.Entities.Item", "Item")
-                        .WithMany("ShopItems")
-                        .HasForeignKey("ItemId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .WithMany()
+                        .HasForeignKey("ItemId");
 
                     b.HasOne("Domain.Entities.Shop", "Shop")
-                        .WithMany("ShopItems")
-                        .HasForeignKey("ShopId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .WithMany()
+                        .HasForeignKey("ShopId");
 
                     b.Navigation("Item");
 
                     b.Navigation("Shop");
                 });
 
-            modelBuilder.Entity("Domain.Entities.Item", b =>
-                {
-                    b.Navigation("ShopItems");
-                });
-
             modelBuilder.Entity("Domain.Entities.Shop", b =>
                 {
-                    b.Navigation("ShopItems");
+                    b.Navigation("Items");
                 });
 #pragma warning restore 612, 618
         }

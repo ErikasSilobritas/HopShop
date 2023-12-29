@@ -7,6 +7,7 @@ namespace Infrastructure.Contexts
     {
         public DbSet<Item>items { get; set; }
         public DbSet<Shop>shops { get; set; }
+        public DbSet<PurchaseHistory>purchases { get; set; }
         public DataContext(DbContextOptions<DataContext> options) : base(options) { }
     }
 }

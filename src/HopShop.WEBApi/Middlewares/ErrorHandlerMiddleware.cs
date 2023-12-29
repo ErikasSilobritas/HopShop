@@ -46,6 +46,12 @@ namespace HopShop.WEBApi.Middlewares
                     case KeyNotFoundException e:
                         response.StatusCode = (int)HttpStatusCode.NotFound;
                         break;
+                    case InsufficientItemQuantityException e:
+                        response.StatusCode = (int)HttpStatusCode.BadRequest;
+                        break;
+                    case IncorrectQuantityException e:
+                        response.StatusCode = (int)HttpStatusCode.BadRequest;
+                        break;
                     default:
                         _logger.LogError(error, error.Message);
                         response.StatusCode = (int)HttpStatusCode.InternalServerError;

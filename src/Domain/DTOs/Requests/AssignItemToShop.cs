@@ -11,9 +11,6 @@ namespace Domain.DTOs.Requests
     public class AssignItemToShop
     {
         public int Id { get; set; }
-        public int? ShopId { get; set; }
-
-        [ForeignKey("ShopId")]
-        public Shop Shop { get; set; }
+        public int ShopId { get; set; }
     }
 }

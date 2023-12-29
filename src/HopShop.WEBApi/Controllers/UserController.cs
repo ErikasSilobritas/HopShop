@@ -41,5 +41,14 @@ namespace HopShop.WEBApi.Controllers
         {
             return Ok(await _userService.CreateUser(user));
         }
+
+        /// <summary>
+        /// Buy some items
+        /// </summary>
+        [HttpPut]
+        public async Task<ActionResult> Buy([FromBody] BuyItem item)
+        {
+            return Ok(await _userService.Buy(item));
+        }
     }
 }

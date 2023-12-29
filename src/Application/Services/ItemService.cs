@@ -25,8 +25,9 @@ namespace Application.Services
             {
                 Id = i.Id,
                 Name = i.Name,
-                Price = i.Price,
-                Quantity = i.Quantity
+                Price = (decimal)i.Price,
+                Quantity = (int)i.Quantity,
+                ShopId = i.ShopId
             }).ToList();
         }
 
@@ -43,8 +44,9 @@ namespace Application.Services
             { 
                 Id = item.Id, 
                 Name = item.Name, 
-                Price= item.Price, 
-                Quantity= item.Quantity 
+                Price= (decimal)item.Price, 
+                Quantity = (int)item.Quantity, 
+                ShopId = item.ShopId
             };
 
             return itemRequest;
@@ -56,13 +58,17 @@ namespace Application.Services
             {
                 throw new ItemNotFoundException();
             }
-
+            else if (await _shopRepository.GetShopById(editItem.ShopId) is null)
+            {
+                throw new ShopNotFoundException();
+            }
             var item = new Item
             {
                 Id = editItem.Id,
                 Name = editItem.Name,
                 Price = editItem.Price,
-                Quantity = editItem.Quantity
+                Quantity = editItem.Quantity,
+                ShopId = editItem.ShopId
             };
 
             var returnedItem = await _itemRepository.EditItem(item);    
@@ -71,14 +77,15 @@ namespace Application.Services
             {
                 Id = returnedItem.Id,
                 Name = returnedItem.Name,
-                Price = returnedItem.Price,
-                Quantity = returnedItem.Quantity
+                Price = (decimal)returnedItem.Price,
+                Quantity = (int)returnedItem.Quantity,
+                ShopId = returnedItem.ShopId
             };
 
             return editedItem;
         }
 
-        public async Task AssignItemToShop(AssignItemToShop assign)
+        public async Task<GetItem> AssignItemToShop(AssignItemToShop assign)
         {
             if (await _itemRepository.GetItemById(assign.Id) is null)
             {
@@ -88,6 +95,21 @@ namespace Application.Services
             {
                 throw new ShopNotFoundException();
             }
+            Item item = new Item
+            {
+                Id = assign.Id,
+                ShopId = assign.ShopId
+            };
+            var returnedItem = await _itemRepository.EditItem(item);
+            var assignedItem = new GetItem
+            {
+                Id = returnedItem.Id,
+                Name = returnedItem.Name,
+                Price = (decimal)returnedItem.Price,
+                Quantity = (int)returnedItem.Quantity,
+                ShopId = returnedItem.ShopId
+            };
+            return assignedItem;
 
         }
 
